@@ -1,0 +1,6 @@
+[package]
+name = "db_manager"
+version = "0.1.0"
+authors = ["Mark Ellis <m@rkellis.com>"]
+
+[dependencies]
