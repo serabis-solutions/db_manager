@@ -72,19 +72,16 @@ fn main() {
     }
 }
 
-trait IterableDeuggableStr<'a>: Iterator<Item = &'a str> + std::fmt::Debug {}
-impl<'a, T: Iterator<Item = &'a str> + std::fmt::Debug> IterableDeuggableStr<'a> for T {}
-
 fn add(config: &str, name: &str) {
     debug!("add: \"{}\"", name);
 }
-fn deploy<'a>(config: &str, target: &str, migrations: Option<impl IterableDeuggableStr<'a>>) {
+fn deploy<'a>(config: &str, target: &str, migrations: Option<impl Iterator<Item = &'a str> + std::fmt::Debug>) {
     debug!("deploy: \"{}\" [{:?}]", target, migrations);
 }
-fn verify<'a>(config: &str, target: &str, migrations: Option<impl IterableDeuggableStr<'a>>) {
+fn verify<'a>(config: &str, target: &str, migrations: Option<impl Iterator<Item = &'a str> + std::fmt::Debug>) {
     debug!("verify: \"{}\" [{:?}]", target, migrations);
 }
-fn revert<'a>(config: &str, target: &str, migrations: impl IterableDeuggableStr<'a>) {
+fn revert<'a>(config: &str, target: &str, migrations: impl Iterator<Item = &'a str> + std::fmt::Debug) {
     debug!("revert: \"{}\" [{:?}]", target, migrations);
 }
 fn list_available(config: &str) {
