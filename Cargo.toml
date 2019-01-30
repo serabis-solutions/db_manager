@@ -7,4 +7,6 @@ edition = "2018"
 [dependencies]
 log = "0.4"
 env_logger = "0.5"
-clap = { git = "https://github.com/clap-rs/clap", rev = "3294d18" }
+clap = {git = "https://github.com/clap-rs/clap", rev = "3294d18"}
+config = "0.9"
+lazy_static = "1.2"
