@@ -1,0 +1,13 @@
+[stage]
+    file = "stage_config.json"
+    type = "mysql"
+    hostname = "{$file::deep.config.why.because.db.hostname}"
+    username = "{$file::deep.config.why.because.db.username}"
+    password = "{$file::deep.config.why.because.db.password}"
+
+[prod]
+    file = "prod_config.yaml"
+    type = "mysql"
+    hostname = "{$file::some.other.key.hostname}"
+    username = "{$file::a.different.username}"
+    password = "{$file::a.different.password}"

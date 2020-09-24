@@ -1,0 +1,15 @@
+{
+    "deep": {
+        "config": {
+            "why": {
+                "because": {
+                    "db": {
+                        "host": "stage_hostname",
+                        "username": "stage_username",
+                        "password": "stage_password",
+                    }
+                }
+            }
+        }
+    }
+}

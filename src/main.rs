@@ -1,3 +1,6 @@
+#[cfg(test)]
+mod test;
+
 use clap::clap_app;
 use env_logger;
 use log::debug;

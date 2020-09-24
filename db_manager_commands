@@ -1,0 +1,7 @@
+db_manager --target=foo deploy {$name1,$name2,...}
+db_manager --target=foo revert $name1,$name2,...
+db_manager --target=foo verify
+db_manager --target=foo verify {$name1,$name2,...}
+db_manager --target=foo list deployed
+db_manager --target=foo list available
+db_manager --target=foo add $name

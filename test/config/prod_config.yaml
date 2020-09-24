@@ -1,0 +1,9 @@
+some:
+    other:
+        key:
+            hostname: "prod_host"
+
+a:
+    different:
+        username: "prod_username"
+        password: "prod_password"
