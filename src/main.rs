@@ -1,17 +1,18 @@
 #[cfg(test)]
 mod test;
 
+mod config;
+
 use clap::clap_app;
-use env_logger;
-use log::debug;
-use config;
 use lazy_static::lazy_static;
-use std::sync::RwLock;
+use log::debug;
 
 lazy_static! {
     static ref CONFIG: config::Config = {
         let mut config = config::Config::default();
-        config.merge(config::File::with_name("dbmanager")).expect("error reading config");
+        config
+            .merge(config::File::with_name("dbmanager"))
+            .expect("error reading config");
 
         config
     };
@@ -59,14 +60,12 @@ fn main() {
 
     match app.get_matches().subcommand() {
         ("add", Some(sub_m)) => add(sub_m.value_of("name").unwrap()),
-        ("deploy", Some(sub_m)) => deploy(
-            sub_m.value_of("target").unwrap(),
-            sub_m.values_of("name"),
-        ),
-        ("verify", Some(sub_m)) => verify(
-            sub_m.value_of("target").unwrap(),
-            sub_m.values_of("name"),
-        ),
+        ("deploy", Some(sub_m)) => {
+            deploy(sub_m.value_of("target").unwrap(), sub_m.values_of("name"))
+        }
+        ("verify", Some(sub_m)) => {
+            verify(sub_m.value_of("target").unwrap(), sub_m.values_of("name"))
+        }
         ("revert", Some(sub_m)) => revert(
             sub_m.value_of("target").unwrap(),
             sub_m.values_of("name").unwrap(),
@@ -92,7 +91,7 @@ fn verify<'a>(target: &str, migrations: Option<impl Iterator<Item = &'a str> + s
 fn revert<'a>(target: &str, migrations: impl Iterator<Item = &'a str> + std::fmt::Debug) {
     debug!("revert: \"{}\" [{:?}]", target, migrations);
 }
-fn list_available(){
+fn list_available() {
     debug!("list_available {:?}", CONFIG.get_str("fpp"));
 }
 fn list_deployed(target: &str) {
