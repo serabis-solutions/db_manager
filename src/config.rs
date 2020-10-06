@@ -1,17 +1,25 @@
+use std::collections::HashMap;
+
+pub struct Config {
+    config: HashMap<String, Profile>,
+}
+pub struct Profile {
+    name: String,
+    db_type: DbType,
+    hostname: Hostname,
+    username: Username,
+    password: Password,
+    port: u16,
+}
 pub enum DbType {
     MySQL,
     PostgreSQL,
 }
-pub struct Config {
-    config: Vec<Profile>,
-}
-pub struct Profile {
-    db_type: DbType,
-    hostname: String,
-    username: String,
-    password: String,
-    port: u16,
-}
+
+//Todo custom deserialise on these that means they read the file
+struct Hostname(String);
+struct Username(String);
+struct Password(String);
 
 impl Config {
     pub fn load(name: &str) -> Self {
@@ -19,8 +27,10 @@ impl Config {
         config
             .merge(config::File::with_name(name))
             .unwrap();
+
+        //call tryinto<Config>
         Self {
-            config: vec![]
+            config: HashMap::new()
         }
     }
 }
