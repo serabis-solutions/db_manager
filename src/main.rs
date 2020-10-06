@@ -4,17 +4,18 @@ mod test;
 mod config;
 
 use clap::clap_app;
-use lazy_static::lazy_static;
 use log::debug;
+use lazy_static::lazy_static;
 
 lazy_static! {
     static ref CONFIG: config::Config = {
-        let mut config = config::Config::default();
-        config
-            .merge(config::File::with_name("dbmanager"))
-            .expect("error reading config");
+        config::Config::load("dbmanager")
+        // let mut config = config::Config::default();
+        // config
+        //     .merge(config::File::with_name("dbmanager"))
+        //     .expect("error reading config");
 
-        config
+        // config
     };
 }
 
@@ -92,7 +93,8 @@ fn revert<'a>(target: &str, migrations: impl Iterator<Item = &'a str> + std::fmt
     debug!("revert: \"{}\" [{:?}]", target, migrations);
 }
 fn list_available() {
-    debug!("list_available {:?}", CONFIG.get_str("fpp"));
+    unimplemented!();
+    // debug!("list_available {:?}", CONFIG.get_str("fpp"));
 }
 fn list_deployed(target: &str) {
     debug!("list_deployed: \"{}\"", target);
