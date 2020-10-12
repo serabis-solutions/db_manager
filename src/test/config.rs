@@ -1,6 +1,7 @@
-use crate::config;
+use crate::config::Config;
 
 #[test]
-fn it_works() {
-    assert_eq!(2 + 2, 4);
+fn load() {
+    let config = Config::load("test/config/config");
+    panic!("{:#x?}", config);
 }

@@ -10,4 +10,5 @@ env_logger = "0.5"
 clap = {git = "https://github.com/clap-rs/clap", rev = "3294d18"}
 config = "0.10"
 lazy_static = "1.2"
-
+serde = {version = "1.0", features = ["derive"]}
+anyhow = "1.0"

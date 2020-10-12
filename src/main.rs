@@ -9,7 +9,8 @@ use lazy_static::lazy_static;
 
 lazy_static! {
     static ref CONFIG: config::Config = {
-        config::Config::load("dbmanager")
+        //TODO nice error
+        config::Config::load("dbmanager").unwrap()
         // let mut config = config::Config::default();
         // config
         //     .merge(config::File::with_name("dbmanager"))

@@ -1,43 +1,46 @@
+mod profile;
+use serde::Deserialize;
 use std::collections::HashMap;
+use anyhow::Result;
 
+#[derive(Debug, Deserialize)]
 pub struct Config {
-    config: HashMap<String, Profile>,
+    #[serde(with = "profile", rename(deserialize = "profile"))]
+    profiles: HashMap<String, Profile>,
 }
+#[derive(Debug, Deserialize)]
 pub struct Profile {
     name: String,
+    #[serde(rename(deserialize = "type"))]
     db_type: DbType,
     hostname: Hostname,
     username: Username,
     password: Password,
-    port: u16,
+    port: Option<u16>,
 }
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "lowercase")]
 pub enum DbType {
     MySQL,
     PostgreSQL,
 }
 
 //Todo custom deserialise on these that means they read the file
+#[derive(Debug, Deserialize)]
 struct Hostname(String);
+
+#[derive(Debug, Deserialize)]
 struct Username(String);
+
+#[derive(Debug, Deserialize)]
 struct Password(String);
 
 impl Config {
-    pub fn load(name: &str) -> Self {
-        let mut config = config::Config::default();
-        config
-            .merge(config::File::with_name(name))
-            .unwrap();
+    pub fn load(name: &str) -> Result<Self> {
+        let mut config = config::Config::new();
 
-        //call tryinto<Config>
-        Self {
-            config: HashMap::new()
-        }
+        config.merge(config::File::with_name(name));
+
+        config.try_into().map_err(::anyhow::Error::from)
     }
 }
-
-// [stage]
-//     file = "stage_config.json"
-//     type = "mysql"
-//     hostname = "{$file::deep.config.why.because.db.hostname}"
-//     username = "{$file::deep.config.why.because.db.username}"
-//     password = "{$file::deep.config.why.because.db.password}"
