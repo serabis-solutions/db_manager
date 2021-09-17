@@ -1,9 +1,32 @@
-use clap::clap_app;
+/* use clap::clap_app;
 use env_logger;
-use log::debug;
+use log::debug; */
+use tracing::{debug, info, Level};
+use tracing_subscriber::{EnvFilter, FmtSubscriber};
+
+mod args;
 
 fn main() {
-    env_logger::init();
+    let subscriber = FmtSubscriber::builder()
+        // all spans/events with a level higher than TRACE (e.g, debug, info, warn, etc.)
+        // will be written to stdout.
+        // completes the builder.
+        .with_env_filter(EnvFilter::from_default_env())
+        .finish();
+
+    tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
+
+    let number_of_yaks = 3;
+    // this creates a new event, outside of any spans.
+    info!(number_of_yaks, "preparing to shave yaks");
+
+    let number_shaved = 3;
+    debug!(
+        all_yaks_shaved = number_shaved == number_of_yaks,
+        "yak shaving completed."
+    );
+
+    /* env_logger::init();
 
     let matches = clap_app!(db_manager =>
         (version: "1.0")
@@ -69,19 +92,31 @@ fn main() {
             _ => panic!("no subcommand - shouldn't ever get here"),
         },
         _ => panic!("no subcommand - shouldn't ever get here"),
-    }
+    } */
 }
 
 fn add(config: &str, name: &str) {
     debug!("add: \"{}\"", name);
 }
-fn deploy<'a>(config: &str, target: &str, migrations: Option<impl Iterator<Item = &'a str> + std::fmt::Debug>) {
+fn deploy<'a>(
+    config: &str,
+    target: &str,
+    migrations: Option<impl Iterator<Item = &'a str> + std::fmt::Debug>,
+) {
     debug!("deploy: \"{}\" [{:?}]", target, migrations);
 }
-fn verify<'a>(config: &str, target: &str, migrations: Option<impl Iterator<Item = &'a str> + std::fmt::Debug>) {
+fn verify<'a>(
+    config: &str,
+    target: &str,
+    migrations: Option<impl Iterator<Item = &'a str> + std::fmt::Debug>,
+) {
     debug!("verify: \"{}\" [{:?}]", target, migrations);
 }
-fn revert<'a>(config: &str, target: &str, migrations: impl Iterator<Item = &'a str> + std::fmt::Debug) {
+fn revert<'a>(
+    config: &str,
+    target: &str,
+    migrations: impl Iterator<Item = &'a str> + std::fmt::Debug,
+) {
     debug!("revert: \"{}\" [{:?}]", target, migrations);
 }
 fn list_available(config: &str) {
